@@ -7,7 +7,7 @@ from su8 import connRedis
 def urlGet():
     db.ctrip_url.drop()
     collection = db['ctrip_url']
-    url = 'http://114.55.84.165:8081/api/super8/getHotelUrlInfo'
+    url = ''  # 获取任务的接口
     res = requests.get(url,)
     res.encoding = 'utf-8'
     res = json.loads(res.text.strip('var data='))
@@ -59,5 +59,5 @@ if __name__ == '__main__':
     conn = pymongo.MongoClient('localhost', 27017)
     db = conn.su8
     conn = connRedis.OPRedis()
-    # urlGet()
+    urlGet()
     urlClean()
