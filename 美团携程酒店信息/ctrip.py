@@ -178,13 +178,11 @@ def db():
 
 
 def run(day, threadname):
-    # for i in range(1, 4):
     start_day, end_date = getTime(day)
     hotelList = db().ctrip_url.find()
     j = 0
     for hotel in hotelList:
         j += 1
-        # print(j)
         print(threadname+':'+str(j))
         if hotel['ctripUrl'] is not None:
             hotel_name = hotel['hotelName']
@@ -204,4 +202,3 @@ if __name__ == '__main__':
     t1.start()
     t2.start()
     t3.start()
-    # run()
