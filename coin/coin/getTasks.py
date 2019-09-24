@@ -1,4 +1,3 @@
-# http://admin.bxtdata.com/api/reptile/findYQReptileParams
 import requests
 import json
 from copy import deepcopy
