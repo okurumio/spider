@@ -7,7 +7,7 @@ from pymongo import MongoClient
 
 class getTasks:
     def __init__(self):
-        url = 'http://admin.bxtdata.com/api/reptile/findYQReptileParams'
+        url = ''  # 获取任务接口
         res = requests.get(url,)
         res.encoding = 'utf-8'
         self.res = json.loads(res.text.strip('var data='))
@@ -70,12 +70,12 @@ def post_data(datass):
         "dictPlan": "[[]]",
         "datas": [datass],
         "currentPort": "8071",
-        "currentHost": "192.168.0.10",
+        "currentHost": "",
         "page_url": datass['page_url']
     }
     try:
         req = requests.post(
-            'http://121.43.36.158:9080/otaapi/DocCache/cachedocByStoreType?type=insert&isWeibo=false&cacheServerName=cache03&storeType=seg_solr',
+            '',  # 上传接口
             data=json.dumps(data).encode('utf-8'),
             headers={
                 "Content-Type": "text/xml; charset=utf8"
