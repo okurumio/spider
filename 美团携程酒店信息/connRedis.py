@@ -9,7 +9,7 @@ class OPRedis(object):
 
     @staticmethod
     def getRedisCoon():
-        OPRedis.pool = redis.ConnectionPool(host='114.55.84.165', password='FNldn.dgdj,gDN,34md', port=6379, db=0)
+        OPRedis.pool = redis.ConnectionPool(host='', password='', port=6379, db=0)  # 配置代理
 
     # 判断表类型
     def typeredis(self, key):
