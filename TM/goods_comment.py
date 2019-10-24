@@ -55,7 +55,6 @@ class GoodsComment:
                               }
                     emoji_pattern = re.compile(u'[\U00010000-\U0010ffff]')
                     liItem['rateContent'] = emoji_pattern.sub('', liItem['rateContent'])
-                    print(liItem)
                     self.comment_list.append(liItem)
                 else:
                     # 不符合条件的数据标记+1
