@@ -3,6 +3,7 @@ import hashlib
 from database import Mongo
 import requests
 import connRedis
+import time
 import json
 import re
 
@@ -20,10 +21,8 @@ class GoodsContent:
         item['pageUrl'] = 'https://detail.tmall.com/item.htm?id={}'.format(goods_id[0])
         item['_id'] = urlmd5(item['pageUrl'] + item['keyword'])
         item['productId'] = int(goods_id[0])
-        item['platform'] = '天猫'  # 平台
         item['custom'] = 2  # 平台
         item['platformType'] = 2
-        item['platformType'] = 3
         url = 'https://h5api.m.taobao.com/h5/mtop.taobao.detail.getdetail/6.0/?data=%7B%22itemNumId%22%3A%22{}%22%7D'.format(goods_id[0])
         response = requests.get(url)
         print(response.url)
@@ -31,7 +30,10 @@ class GoodsContent:
         dataitem = data['item']
         dataprops = data['props']
         apiStack = json.loads(data['apiStack'][0]['value'])
-        item['productParam'] = dataprops['groupProps'][0]['基本信息'][12]['食品口味']  # 商品规格
+        try:
+            item['productParam'] = dataprops['groupProps'][0]['基本信息'][12]['食品口味']  # 商品规格
+        except:
+            item['productParam'] = ''
         item['currentPrice'] = apiStack['price']['price']['priceText']
         try:
             item['originalPrice'] = apiStack['price']['extraPrices'][0]['priceText']  # 原价
@@ -87,7 +89,12 @@ class GoodsContent:
             pram = ''
         item['promotion'] += pram
 
-        item['productParam'] = ''  # 商品规格
+        item['crawlTime'] = int(time.time() * 1000)
+        craw_date = time.localtime(item['crawlTime'] / 1000)
+        craw_date = time.strftime("%Y-%m-%d", craw_date)
+        url = item['shopId'] + str(item['productId']) + craw_date + item['platform']
+        item['connectGoodsId'] = urlmd5(url)
+
         item['productSkuDetail'] = []  # 商品sku 详情
         try:
             skuprops = data['skuBase']['props']
@@ -110,7 +117,6 @@ class GoodsContent:
                             item['productSkuDetail'].append(
                                 {'sku_id': sku2['skuId'], 'sku_name': sku_name, 'sku_price': sku_price,
                                  'sku_stock': sku_stock})
-
         comments, crawlCommentsTime = GoodsComment().get(item, 1)
         item['commentsData'] = comments
         item['crawlCommentsCount'] = len(comments)
@@ -121,9 +127,10 @@ class GoodsContent:
     def run(self):
         i = 0
         items = self.db.get(self.collection_name)
-        for item in items[:1]:
-            print(item)
+        for item in items:
+            print(i)
             goodsitem = self.get(item)
+            self.db.insert(self.save_collection_name, goodsitem)
             i += 1
 
 
