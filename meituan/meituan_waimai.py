@@ -236,9 +236,8 @@ class meituan:
 
 
 if __name__ == '__main__':
-    item = {'shopName': '小恒水饺（上地数码大厦店）', 'mtWmPoiId': '1067867502046944'}
-    # meituan().get_list()
-    # meituan().get_info(item)
-    # meituan().get_goods(item)
-    # meituan().get_comment(item)
-    # meituan().get_qualification(item)
+    meituan().get_list()
+    meituan().get_info(item)
+    meituan().get_goods(item)
+    meituan().get_comment(item)
+    meituan().get_qualification(item)
