@@ -1,5 +1,4 @@
 import threading
-
 import requests, zlib, base64
 import random, re
 import json, jsonpath
@@ -21,14 +20,14 @@ class MeiTuan(threading.Thread):
         self.conn = connRedis.OPRedis()
         self.taken = None
         # 隧道服务器
-        self.tunnel_host = "tps136.kdlapi.com"
-        self.tunnel_port = "15818"
+        self.tunnel_host = ""
+        self.tunnel_port = ""
         # 隧道id和密码
-        self.tid = "t16948189012577"
-        self.password = "jj5bkto1"
+        self.tid = ""
+        self.password = ""
         self.proxies = {
             "http": "http://%s:%s@%s:%s/" % (self.tid, self.password, self.tunnel_host, self.tunnel_port),
-            # "https": "http://%s:%s@%s:%s/" % (self.tid, self.password, self.tunnel_host, self.tunnel_port)
+            "https": "http://%s:%s@%s:%s/" % (self.tid, self.password, self.tunnel_host, self.tunnel_port)
         }
 
     @staticmethod
@@ -55,7 +54,6 @@ class MeiTuan(threading.Thread):
             base_data = zlib.decompress(data)
             return base_data
 
-    # @staticmethod
     def get_uuid(self):
         conn = connRedis.OPRedis()
         url='https://bj.meituan.com/'
@@ -400,7 +398,7 @@ class MeiTuan(threading.Thread):
         urlList = db.meituan_url.find(no_cursor_timeout=True)
         start_day, end_date = self.get_crawtime(i)
         j = 0
-        for hotel in urlList[2064:]:
+        for hotel in urlList:
             j += 1
             print(self.thread_id + str(j))
             hotelId = int(hotel['hotelId'])
